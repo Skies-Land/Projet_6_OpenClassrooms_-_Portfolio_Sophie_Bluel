@@ -14,11 +14,14 @@
         return await response.json();
         
     }
-    getWorks();
+
 
 /*=============== AFFICHAGE WORKS DANS LE DOM ===============*/
     /* Appelle la fonction getWorks pour récupérer les données et effectue le rendu sur la page */
     async function displayWorks() {
+
+        /* Efface le contenu HTML actuel de l'élément avec la classe "gallery" */
+        gallery.innerHTML = ""
 
         /* Appelle la fonction getWorks pour obtenir un tableau d'œuvres */
         const arrayWorks = await getWorks();
