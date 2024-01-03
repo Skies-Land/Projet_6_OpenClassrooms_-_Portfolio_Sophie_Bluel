@@ -19,6 +19,10 @@ footer, header, hgroup, menu, nav, section {
 	display: block;
 }
 
+main {
+	width: 90%;
+}
+
 body {
 	background-color: #fefef8;
 	line-height: 1;
@@ -142,6 +146,31 @@ li:hover {
 #portfolio h2 {
 	text-align: center;
 	margin-bottom: 1em;
+}
+
+.container-filtres {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 15px;
+	height: 100px;
+}
+
+.container-filtres button {
+	background-color: #fefef8;
+	padding: 9px 20px;
+	border: 1px solid #1d6154;
+	border-radius: 25px;
+	color: #1d6154;
+	font-weight: 700;
+	font-size: 1.2rem;
+	font-family: Syne;
+	cursor: pointer;
+}
+
+.container-filtres button:focus {
+	background-color: #1d6154;
+	color: white;
 }
 
 .gallery {
