@@ -13,7 +13,7 @@
 
             /* Vérifie si la réponse HTTP indique une réussite */
             if (!response.ok) {
-                throw new Error('Erreur lors de la récupération des œuvres depuis la conexion vers API.');
+                throw new Error('Erreur lors de la récupération des œuvres depuis la connexion vers API.');
             }
 
             /* Si la réponse est OK, passe la réponse en tant que JSON et la retourne */
@@ -79,7 +79,7 @@
 
             /* Vérifie si la réponse HTTP indique une réussite */
             if (!response.ok) {
-                throw new Error('Erreur lors de la récupération des catégories depuis la conexion vers API.');
+                throw new Error('Erreur lors de la récupération des catégories depuis la connexion vers API.');
             }
 
             /* Si la réponse est OK, passe la réponse en tant que JSON et la retourne */
