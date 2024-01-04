@@ -12,4 +12,4 @@ Impl√©menter la partie Front-End d'un site de portfolio d'une archistecte d'int√
 
 ##
 
-![preview](https://github.com/Skies-Land/Projet_6_OpenClassrooms_-_Portfolio_Sophie_Bluel/assets/146822518/bee6e81d-e679-4721-92e7-f8fdc1fa33e8)
+![preview](https://github.com/Skies-Land/Projet_6_OpenClassrooms_-_Portfolio_Sophie_Bluel/assets/146822518/8951d27a-aafb-481b-a4c5-2d74565befd0)
