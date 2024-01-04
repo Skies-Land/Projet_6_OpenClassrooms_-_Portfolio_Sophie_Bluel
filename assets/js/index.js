@@ -1,91 +1,156 @@
 /*=============== VARIABLES ===============*/
-    /*  Sélectionne l'élément du DOM avec la classe "gallery" et le stocke dans la variable gallery */
+    /* Sélectionne l'élément du DOM avec la classe "gallery" et le stocke dans la variable gallery */
     const gallery = document.querySelector(".gallery");
+    /* Sélectionne l'élément du DOM avec la classe "container-filtres" et le stocke dans la variable filters */
     const filters = document.querySelector(".container-filtres");
 
 /*=============== CONNEXION DE L'API POUR LES WORKS ===============*/
     /* Fonction asynchrone qui effectue une requête HTTP pour récupérer des données depuis l'API */
     async function getWorks() {
+        try {
+            /* Effectue une requête HTTP à l'URL spécifiée */
+            const response = await fetch("http://localhost:5678/api/works");
 
-        /* Effectue une requête HTTP à l'URL spécifiée */
-        const response = await fetch("http://localhost:5678/api/works");
+            /* Vérifie si la réponse HTTP indique une réussite */
+            if (!response.ok) {
+                throw new Error('Erreur lors de la récupération des œuvres depuis la conexion vers API.');
+            }
 
-        /* Attend que la réponse de la requête soit convertie en format JSON et la retourne */
-        return await response.json();
+            /* Si la réponse est OK, passe la réponse en tant que JSON et la retourne */
+            return await response.json();
+        } catch (error) {
+
+            /*  En cas d'erreur, affiche l'erreur dans la console */
+            console.error(error.message);
+            /* Retourne un tableau vide pour indiquer qu'aucune œuvre n'a été récupérée */
+            return [];
+        }
     }
+    /* Appel de la fonction pour récupérer les données depuis l'API */
+    getWorks();
 
-/*=============== AFFICHAGE WORKS DANS LE DOM ===============*/
-    /* Appelle la fonction getWorks pour récupérer les données et effectue le rendu sur la page */
+/*=============== AFFICHAGE & CRÉATION DES WORKS DANS LE DOM ===============*/
+    /* Fonction asynchrone permettant l'afficher les œuvres */
     async function displayWorks() {
+        /* Récupération des œuvres depuis l'API de manière asynchrone */
+        const works = await getWorks();
 
-        /* Efface le contenu HTML actuel de l'élément avec la classe "gallery" */
-        gallery.innerHTML = '';
-
-        /* Appelle la fonction getWorks pour obtenir un tableau d'œuvres */
-        const arrayWorks = await getWorks();
-
-        /* Utilise la méthode forEach pour itérer sur chaque élément du tableau d'œuvres */
-        arrayWorks.forEach((work) => {
-
-            /* Crée un élément <figure> pour chaque œuvre */
-            const figure = document.createElement("figure");
-
-            /* Crée un élément <img> pour afficher l'image de l'œuvre */
-            const img = document.createElement("img");
-
-            /* Crée un élément <figcaption> pour afficher le titre de l'œuvre */
-            const figcaption = document.createElement("figcaption");
-
-            /* Définit l'attribut src de l'élément img avec l'URL de l'image de l'œuvre */
-            img.src = work.imageUrl;
-
-            /* Définit le contenu textuel de l'élément "figcaption" avec le titre de l'œuvre */
-            figcaption.textContent = work.title;
-
-            /* Ajoute l'élément img comme enfant de l'élément figure */
-            figure.appendChild(img);
-
-            /* Ajoute l'élément figcaption comme enfant de l'élément figure */
-            figure.appendChild(figcaption);
-
-            /* Ajoute l'élément figure comme enfant de l'élément avec la classe "gallery" */
-            gallery.appendChild(figure);
+        /* Pour chaque œuvre dans le tableau, appelle la fonction createWorks avec l'œuvre (work) comme argument */
+        works.forEach((work) => {
+            createWorks(work);
         });
     }
-
-    /* Appelle la fonction displayWorks pour démarrer le processus d'affichage des œuvres */
+    /* Appel de la fonction pour afficher les œuvres */
     displayWorks();
+
+    /* Fonction permettant de créer des éléments DOM associés à une œuvre */
+    function createWorks(work) {
+        /* Crée un élément <figure> pour chaque œuvre */
+        const figure = document.createElement("figure");
+
+        /* Crée un élément <img> pour afficher l'image de l'œuvre */
+        const img = document.createElement("img");
+
+        /* Crée un élément <figcaption> pour afficher le titre de l'œuvre */
+        const figcaption = document.createElement("figcaption");
+
+        /* Définit l'attribut src de l'élément img avec l'URL de l'image de l'œuvre */
+        img.src = work.imageUrl;
+
+        /* Définit le contenu textuel de l'élément "figcaption" avec le titre de l'œuvre */
+        figcaption.textContent = work.title;
+
+        /* Ajoute l'élément img comme enfant de l'élément figure */
+        figure.appendChild(img);
+
+        /* Ajoute l'élément figcaption comme enfant de l'élément figure */
+        figure.appendChild(figcaption);
+
+        /* Ajoute l'élément figure comme enfant de l'élément avec la classe "gallery" */
+        gallery.appendChild(figure);
+    }
 
 /*=============== BOUTONS DE CATÉGORIES ===============*/
     /* Récupération des catégories du tableau */
     async function getCategories() {
         try {
+            /* Effectue une requête HTTP vers l'API pour obtenir les catégories */
             const response = await fetch("http://localhost:5678/api/categories");
-    
+
+            /* Vérifie si la réponse HTTP indique une réussite */
             if (!response.ok) {
-                throw new Error('Erreur lors de la récupération des catégories.');
+                throw new Error('Erreur lors de la récupération des catégories depuis la conexion vers API.');
             }
-    
+
+            /* Si la réponse est OK, passe la réponse en tant que JSON et la retourne */
             return await response.json();
         } catch (error) {
+
+            /*  En cas d'erreur, affiche l'erreur dans la console */
             console.error(error.message);
-            return []; /* Retourne un tableau vide en cas d'erreur. */
+
+            /* Retourne un tableau vide pour indiquer qu'aucune catégorie n'a été récupérée */
+            return [];
         }
     }
-    
+
     /* Affichage des catégories du tableau */
     async function displayCategoriesButtons() {
+
+        /* Appel la fonction getCategories pour obtenir les catégories depuis l'API */
         const categories = await getCategories();
-    
+
+        /* Pour chaque catégorie obtenue, crée un bouton et l'ajoute à un élément avec la classe "container-filtres" */
         categories.forEach((category) => {
             const btn = document.createElement("button");
             btn.textContent = category.name;
             btn.id = category.id;
-    
             filters.appendChild(btn);
         });
     }
-    
+    /* Appel la fonction displayCategoriesButtons pour afficher les boutons des catégories dans le DOM */
     displayCategoriesButtons();
 
     /* Filtrage des boutons de catégories */
+    async function filterCategories() {
+
+        let btnId;
+
+        /* Récupération de toutes les œuvres depuis l'API de manière asynchrone */
+        const images = await getWorks();
+
+        /*  Sélection de tous les boutons dans l'élément avec la classe "container-filtres" */
+        const buttons = document.querySelectorAll(".container-filtres button");
+
+        /* Pour chaque bouton, ajouter une écoute d'événement pour le clic */
+        buttons.forEach((button) => {
+            button.addEventListener("click", (e) => {
+
+                /* Récupération de l'identifiant du bouton cliqué */
+                btnId = e.target.id;
+
+                /* Effacement du contenu actuel de l'élément avec la classe "gallery" */
+                gallery.innerHTML = '';
+
+                /* Si l'identifiant du bouton n'est pas "0" */
+                if (btnId !== "0") {
+
+                    /* Filtre les œuvres en fonction de la catégorie sélectionnée */
+                    const filterImages = images.filter((work) => {
+                        return work.categoriesId === btnId;
+                    });
+
+                    /* Pour chaque œuvre filtrée, appeler la fonction createWorks pour l'afficher */
+                    filterImages.forEach((work) => {
+                        createWorks(work);
+                    });
+                } else {
+
+                    /* Si l'identifiant du bouton est "0", afficher toutes les œuvres */
+                    displayWorks();
+                }
+            });
+        });
+    }
+    /*  Appel de la fonction pour filtrer les catégories au chargement de la page */
+    filterCategories();
