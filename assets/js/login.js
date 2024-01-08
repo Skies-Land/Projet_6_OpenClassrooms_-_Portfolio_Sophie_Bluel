@@ -1,69 +1,71 @@
 /*=============== VARIABLES ===============*/
-    /* Sélectionne les éléments du DOM composant le formulaire de connexion */
     const emailInput = document.querySelector("form #email");
     const passwordInput = document.querySelector("form #password");
     const loginForm = document.querySelector("form");
     const messageError = document.querySelector(".login p");
 
-/*=============== CONNEXION DE L'API POUR LES IDENTIFIANTS ===============*/
-    /* Fonction asynchrone qui récupère l'utilisateur depuis l'API */
-    async function getUsersFromApi() {
-        try {
-            /* Effectue une requête asynchrone vers l'API pour récupérer l'utilisateur */
-            const response = await fetch("http://localhost:5678/api/users/login");
+/* Ajout un écouteur d'événement pour le formulaire de connexion */
+loginForm.addEventListener("submit", (e) => {
+    
+    /* Empêche que le formulaire de connexion recharge la page */
+    e.preventDefault();
 
-            /* Vérifie si la requête a été réussie (statut HTTP 200-299) */
-            if (!response.ok) {
-                /* En cas d'échec, lance une erreur avec un message */
-                throw new Error("Échec de la récupération de l'utilisateur depuis l'API.");
-            }
+    /* Récupère les valeurs des champs email et password saisies par l'utilisateur */
+    const userEmail = emailInput.value;
+    const userPassword = passwordInput.value;
 
-            /* Transforme la réponse JSON de l'API en objet JavaScript et la renvoie */
-            return await response.json();
-        } catch (error) {
-            /* En cas d'erreur lors de la récupération de l'utilisateur, affiche l'erreur dans la console */
-            console.error("Une erreur s'est produite lors de la récupération des utilisateurs:", error);
-            throw error;
-        }
+    /* Vérification si les champs sont vides. Affiche un message d'erreur 
+    si l'un des champs est vide et arrête l'exécution */
+    if (!userEmail || !userPassword) {
+        messageError.textContent = "Veuillez remplir tous les champs.";
+        return;
     }
 
-/*=============== FONCTION PERMETTANT LA CONNEXION ===============*/
-    /* Fonction asynchrone qui gère le processus d'authentification */
-    async function login() {
-        try {
-            /* Récupère l'utilisateur de manière asynchrone */
-            const users = await getUsersFromApi();
+    /* Préparation des données à envoyer au serveur sous forme d'objet JSON */
+    const login = {
+        email: userEmail,
+        password: userPassword,
+    };
 
-            /* Ajoute un écouteur d'événement sur la soumission du formulaire */
-            loginForm.addEventListener("submit", (e) => {
-                e.preventDefault();
+    /* Convertit l'objet login en une chaîne JSON */
+    const user = JSON.stringify(login);
 
-                /* Récupère les valeurs de l'email et du mot de passe du formulaire */
-                const userEmail = emailInput.value;
-                const userPassword = passwordInput.value;
+    /* Envoi d'une requête POST au serveur pour l'authentification de l'utilisateur */
+    fetch("http://localhost:5678/api/users/login", {
+        method: "POST", /* Méthode de la requête HTTP */
+        mode: "cors", /* Mode CORS (Cross-Origin Resource Sharing) pour permettre des requêtes depuis un autre domaine */
+        credentials: "same-origin", /* Utilise les mêmes informations d'identification que la ressource appelante */
+        headers: { "Content-Type": "application/json" }, /* En-têtes de la requête indiquant que le contenu est au format JSON */
+        body: user, /* Corps de la requête contenant les données utilisateur au format JSON */
+    })
 
-                /* Utilise Array.find() pour rechercher un utilisateur correspondant */
-                const foundUser = users.find
-                (user => user.email === userEmail && user.password === userPassword && user.admin);
-
-                /* Vérifie si un utilisateur correspondant est trouvé */
-                if (foundUser) {
-                    /* Stocke l'état de connexion dans sessionStorage */
-                    window.sessionStorage.loggedIn = true;
-                    /* Redirige vers la page d'accueil */
-                    window.location.href = "../index.html";
-                } else {
-                    /* Affiche un message d'erreur générique en cas d'échec d'authentification */
-                    email.classList.add("message-error");
-                    password.classList.add("message-error");
-                    messageError.textContent = "Échec de l'authentification. Veuillez vérifier vos informations.";
-                }
+    /* Traitement de la réponse de la requête */
+    .then((response) => {
+        if (!response.ok) {
+            /* Gestion des erreurs en cas de réponse non réussie du serveur */
+            return response.json().then((error) => {
+                throw new Error(`Erreur lors de la requête : ${error.message}`);
             });
-
-        } catch (error) {
-            /*  En cas d'erreur lors de la récupération des utilisateurs, affiche l'erreur dans la console */
-            console.error("Une erreur s'est produite lors de la récupération des utilisateurs:", error);
         }
-    }
-    /* Appel la fonction login lors du chargement de la page */
-    login();
+        return response.json(); /* Passe la réponse HTTP en JSON en cas de succès */
+    })
+
+    /* Traitement des données retournées par le serveur après authentification réussie */
+    .then((data) => {
+        const userId = data.userId; /* Récupère l'ID de l'utilisateur de la réponse JSON */
+        const userToken = data.token; /* Récupère le token de l'utilisateur de la réponse JSON */
+        
+        /* Stockage du token et de l'ID de l'utilisateur dans la sessionStorage du navigateur */
+        window.sessionStorage.setItem("token", userToken);
+        window.sessionStorage.setItem("userId", userId);
+        
+        /* Redirection de l'utilisateur vers la page index.html après une authentification réussie */
+        window.location.href = "../index.html";
+    })
+    
+
+    /* Gestion des erreurs lors de la requête ou du traitement des données */
+    .catch((error) => {
+        console.error("Une erreur s'est produite lors de la récupération des données", error);
+    });
+});
