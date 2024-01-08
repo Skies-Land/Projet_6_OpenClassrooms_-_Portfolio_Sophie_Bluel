@@ -112,45 +112,40 @@
     displayCategoriesButtons();
 
     /* Filtrage des boutons de catégories */
-    async function filterCategories() {
-
-        let btnId;
-
-        /* Récupération de toutes les œuvres depuis l'API de manière asynchrone */
+    async function filterCategorie() {
+        /* Récupération des œuvres de manière asynchrone */
         const images = await getWorks();
 
-        /*  Sélection de tous les boutons dans l'élément avec la classe "container-filtres" */
+        /* Sélection de tous les boutons dans l'élément avec la classe "container-filtres" */
         const buttons = document.querySelectorAll(".container-filtres button");
 
-        /* Pour chaque bouton, ajouter une écoute d'événement pour le clic */
+        // Ajout d'un écouteur d'événements "click" à chaque bouton */
         buttons.forEach((button) => {
             button.addEventListener("click", (e) => {
+                /* Suppression de la classe "active" de tous les boutons */
+                buttons.forEach((btn) => {
+                    btn.classList.remove("active");
+                });
 
-                /* Récupération de l'identifiant du bouton cliqué */
-                btnId = e.target.id;
+                /* Ajout de la classe "active" uniquement au bouton cliqué */
+                button.classList.add("active");
 
-                /* Effacement du contenu actuel de l'élément avec la classe "gallery" */
-                gallery.innerHTML = '';
+                /* Récupération de l'ID du bouton cliqué */
+                const btnId = e.target.id;
 
-                /* Si l'identifiant du bouton n'est pas "0" */
-                if (btnId !== "0") {
+                /* Vidage de la galerie d'images */
+                gallery.innerHTML = "";
 
-                    /* Filtre les œuvres en fonction de la catégorie sélectionnée */
-                    const filterImages = images.filter((work) => {
-                        return work.categoriesId === btnId;
-                    });
-
-                    /* Pour chaque œuvre filtrée, appeler la fonction createWorks pour l'afficher */
-                    filterImages.forEach((work) => {
+                /* Parcours de toutes les œuvres */
+                images.forEach((work) => {
+                    /* Si l'ID du bouton correspond à l'ID de la catégorie de l'œuvre
+                    ou si l'ID du bouton est "0", afficher l'œuvre dans la galerie */
+                    if (btnId == work.categoryId || btnId == "0") {
                         createWorks(work);
-                    });
-                } else {
-
-                    /* Si l'identifiant du bouton est "0", afficher toutes les œuvres */
-                    displayWorks();
-                }
+                    }
+                });
             });
         });
     }
-    /*  Appel de la fonction pour filtrer les catégories au chargement de la page */
-    filterCategories();
+    /* Appel de la fonction pour filtrer les catégories au chargement de la page */
+    filterCategorie();
