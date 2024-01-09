@@ -9,6 +9,7 @@
 		<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap" rel="stylesheet">
 		<meta name="description" content="">
 		<link rel="stylesheet" href="assets/style/style.css">
+		<script src="https://kit.fontawesome.com/17f6642d7e.js" crossorigin="anonymous"></script>
 	</head>
 
 	<body>
@@ -20,15 +21,25 @@
 				<ul>
 					<li><a class="active" href="#portfolio">projets</a></li>
 					<li><a href="#contact">contact</a></li>
-					<li><a href="./login.html">login</a></li>
+					<li><a href="./login.html" class="logout">login</a></li>
 					<li><img src="./assets/icons/instagram.png" alt="Icône Instagram"></li>
+					<li><a href="#" class="admin"></a></li>
 				</ul>
 			</nav>
 		</header>
 
+		<!--==================== MODALS ====================-->
+		<div class="container-modals">
+			<div class="modal-projet">
+				<span><i class="fa-solid fa-xmark"></i></span>
+				<h2>Galerie photo</h2>
+				<div class="projet-modal"></div>
+				<button>Ajouter une photo</button>
+			</div>
+		</div>
+
 		<!--==================== MAIN ====================-->
 		<main>
-
 			<!--==================== INTRO ====================-->
 			<section id="introduction">
 				<figure>
@@ -96,7 +107,6 @@
 						<figcaption>Hotel First Arte - New Delhi</figcaption>
 					</figure>
 				</div>
-
 			</section>
 
 			<!--==================== CONTACT ====================-->

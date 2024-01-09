@@ -119,7 +119,7 @@
         /* Sélection de tous les boutons dans l'élément avec la classe "container-filtres" */
         const buttons = document.querySelectorAll(".container-filtres button");
 
-        // Ajout d'un écouteur d'événements "click" à chaque bouton */
+        /* Ajout d'un écouteur d'événements "click" à chaque bouton */
         buttons.forEach((button) => {
             button.addEventListener("click", (e) => {
                 /* Suppression de la classe "active" de tous les boutons */
@@ -149,3 +149,45 @@
     }
     /* Appel de la fonction pour filtrer les catégories au chargement de la page */
     filterCategorie();
+
+/*=============== MODE ADMIN ===============*/
+    /* Si l'utilisateur est connecter, getItem récupérer 
+    la valeur de window.sessionStorage */
+    const loged = window.sessionStorage.getItem("loged");
+
+    /* Élément du DOM pour le mode admin */
+    const admin = document.querySelector("header nav .admin");
+    const logout = document.querySelector("header nav .logout");
+
+    /* Élément du DOM pour la modales*/
+    const containerModals = document.querySelector(".container-modals");
+    const closeModals = document.querySelector(".container-modals .fa-xmark")
+
+    if (loged === "true") {
+        admin.textContent = "Admin";
+        logout.textContent = "logout";
+        logout.addEventListener("click", () => {
+            /* Déconnexion : Mettez à jour la sessionStorage */
+            window.sessionStorage.removeItem("loged");
+        });
+    }
+
+    /* Au click sur "Admin" affichage de la modale pour gérer les projets */
+    admin.addEventListener("click", () => {
+        console.log("admin Mod");
+        containerModals.style.display = "flex";
+    });
+
+    /* Au click sur "la croix dans la modale" ferme l'affichage pour gérer les projets */
+    closeModals.addEventListener("click", () => {
+        console.log("closeModals");
+        containerModals.style.display = "none";
+    });
+
+    /* Permet de fermer la modale sans passer par le croix */
+    containerModals.addEventListener("click", (e) => {
+        console.log(e.target.className);
+        if (e.target.className === "container-modals") {
+            containerModals.style.display = "none";
+        }
+    })

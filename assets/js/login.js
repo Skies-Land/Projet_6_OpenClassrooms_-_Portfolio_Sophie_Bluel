@@ -17,7 +17,7 @@ loginForm.addEventListener("submit", (e) => {
     /* Vérification si les champs sont vides. Affiche un message d'erreur 
     si l'un des champs est vide et arrête l'exécution */
     if (!userEmail || !userPassword) {
-        messageError.textContent = "Veuillez remplir tous les champs.";
+        messageError.textContent = "Erreur dans l’identifiant ou le mot de passe";
         return;
     }
 
@@ -52,12 +52,12 @@ loginForm.addEventListener("submit", (e) => {
 
     /* Traitement des données retournées par le serveur après authentification réussie */
     .then((data) => {
-        const userId = data.userId; /* Récupère l'ID de l'utilisateur de la réponse JSON */
-        const userToken = data.token; /* Récupère le token de l'utilisateur de la réponse JSON */
+        /* Récupation du token et de l'ID de l'utilisateur de la réponse JSON */
+        const { userId, token: userToken } = data;
         
         /* Stockage du token et de l'ID de l'utilisateur dans la sessionStorage du navigateur */
-        window.sessionStorage.setItem("token", userToken);
-        window.sessionStorage.setItem("userId", userId);
+        window.sessionStorage.setItem("token", userToken, "userId", userId);
+        window.sessionStorage.setItem("loged", "true"); /* Ajout d'une indication de connexion */
         
         /* Redirection de l'utilisateur vers la page index.html après une authentification réussie */
         window.location.href = "../index.html";
