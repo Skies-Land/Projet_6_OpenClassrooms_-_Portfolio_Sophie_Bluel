@@ -1,5 +1,4 @@
 /*=============== BASE ===============*/
-
 * {
 	margin: 0;
 	padding: 0;
@@ -29,14 +28,14 @@ body {
 	width: 100%;
 	margin:auto;
 	font-family: 'Work Sans' ;
-	font-size: 14px;
+	font-size: 0.87rem;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 }
 
 section {
-	margin: 50px 0
+	margin: 3.12rem 0;
 }
 
 ol, ul {
@@ -71,7 +70,7 @@ a {
 header {
 	display: flex;
 	justify-content: space-between;
-	margin: 50px 0;
+	margin: 3.12rem 0;
 	width: 90%;
 }
 
@@ -79,21 +78,21 @@ h1 {
 	display: flex;
 	flex-direction: column;
 	font-family: 'Syne';
-	font-size: 22px;
+	font-size: 1.37rem;
 	font-weight: 800;
 	color: #B1663C;
 }
 
 h1 > span {
 	font-family: 'Work Sans';
-	font-size: 10px;
+	font-size: 0.62rem;
 	letter-spacing: 0.1em;
 }
 
 h2 {
 	font-family: 'Syne';
 	font-weight: 700;
-	font-size: 30px;
+	font-size: 1.87rem;
 	color: #1D6154;
 }
 
@@ -104,13 +103,28 @@ nav ul {
 
 }
 nav li {
-	padding: 0 10px;
+	padding: 0 1.87rem;
 	font-size: 1.2em;
 }
 
 li:hover {
 	color: #B1663C;
 	cursor: pointer;
+}
+
+/*=============== ADMINISTRATEUR ===============*/
+.admin-mod {
+	background-color: black;
+	height: 3.12rem;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+}
+
+.admin-mod p {
+	color: white;
 }
 
 /*=============== INTRO ===============*/
@@ -151,15 +165,15 @@ li:hover {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	gap: 15px;
-	height: 100px;
+	gap: 0.93rem;
+	height: 6.25rem;
 }
 
 .container-filtres button {
 	background-color: #fefef8;
-	padding: 9px 20px;
-	border: 1px solid #1d6154;
-	border-radius: 25px;
+	padding: 0.56rem 1.25rem;
+	border: 0.06rem solid #1d6154;
+	border-radius: 1.56rem;
 	color: #1d6154;
 	font-weight: 700;
 	font-size: 1.2rem;
@@ -176,12 +190,26 @@ li:hover {
 	width: 100%;
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr;
-	grid-column-gap: 20px;
-	grid-row-gap: 20px;
+	grid-column-gap: 1.25rem;
+	grid-row-gap: 1.25rem;
 }
 
 .gallery img {
 	width: 100%;
+}
+
+#portfolio .div-edit {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-bottom: 2rem;
+	gap: 1.25rem;
+}
+
+#portfolio .div-edit span {
+	font-size: large;
+	margin-bottom: 1.5rem;
+	cursor: pointer;
 }
 
 /*=============== MODALS ===============*/
@@ -197,9 +225,9 @@ li:hover {
 
 .container-modals button {
 	background-color: #fefef8;
-	padding: 9px 20px;
-	border: 1px solid #1d6154;
-	border-radius: 25px;
+	padding: 0.56rem 1.25rem;
+	border: 0.06rem solid #1d6154;
+	border-radius: 1.56rem;
 	color: #1d6154;
 	font-weight: 700;
 	font-size: 1.2rem;
@@ -216,7 +244,7 @@ li:hover {
 	background-color: white;
 	width: 50%;
 	height: 50%;
-	border-radius: 12px;
+	border-radius: 0.75rem;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -226,17 +254,17 @@ li:hover {
 
 .fa-xmark {
 	position: absolute;
-	top: 20px;
-	right: 20px;
+	top: 1.25rem;
+	right: 1.25rem;
 	cursor: pointer;
 }
 
 /*=============== LOGIN ===============*/
 .login {
 	width: 80%;
-	min-height: 650px;
-	margin-top: 90px;
-	margin-bottom: 228px;
+	min-height: 40.6rem;
+	margin-top: 5.62rem;
+	margin-bottom: 14.25rem;
 }
 
 .reset-password {
@@ -262,21 +290,21 @@ li:hover {
 }
 
 #contact h2{
-	margin-bottom: 20px;
+	margin-bottom: 1.25rem;
 }
 
 #contact form {
 	text-align: left;
-	margin-top: 30px;
+	margin-top: 1.87rem;
 	display: flex;
 	flex-direction: column;
 }
 
 #contact input {
-	height: 50px;
+	height: 3.12rem;
 	font-size: 1.2em;
 	border: none;
-	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+	box-shadow: 0 0.25rem 0.87rem rgba(0, 0, 0, 0.09);
 }
 
 #contact label {
@@ -286,7 +314,7 @@ li:hover {
 
 #contact textarea {
 	border: none;
-	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+	box-shadow: 0 0.25rem 0.87rem rgba(0, 0, 0, 0.09);
 }
 
 input[type="submit"]{
@@ -296,9 +324,9 @@ input[type="submit"]{
 	color: white;
 	background-color: #1D6154;
 	margin : 2em auto;
-	width: 180px;
+	width: 11.25rem;
 	text-align: center;
-	border-radius: 60px;
+	border-radius: 3.75rem;
 }
 
 /*=============== FOOTER ===============*/

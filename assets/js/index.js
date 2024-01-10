@@ -1,10 +1,31 @@
-/*=============== VARIABLES ===============*/
-    /* Sélectionne l'élément du DOM avec la classe "gallery" et le stocke dans la variable gallery */
+//#region - /*===== VARIABLES =====*/
+    /* Élément du DOM pour la galerie et les boutons de catégories */
     const gallery = document.querySelector(".gallery");
-    /* Sélectionne l'élément du DOM avec la classe "container-filtres" et le stocke dans la variable filters */
     const filters = document.querySelector(".container-filtres");
 
-/*=============== CONNEXION DE L'API POUR LES WORKS ===============*/
+    /* Si l'utilisateur est connecter, getItem récupérer la valeur de window.sessionStorage */
+    const loged = window.sessionStorage.getItem("loged");
+
+    /* Élément du DOM pour le mode admin */
+    const admin = document.querySelector("header nav .admin");
+    const logout = document.querySelector("header nav .logout");
+    
+    /* Élément du DOM pour la navbar en mode admin */
+    const portfolio = document.querySelector("#portfolio");
+    const portfolioTitle = document.querySelector("#portfolio h2");
+    const adminTitle = " Mode édition";
+    const LogoAdminMod = `<i class="fa-regular fa-pen-to-square"></i>`;
+    const adminLog = `<div class="admin-mod"><p>${LogoAdminMod}${adminTitle}</p></div>`;
+    const divEdit = document.createElement("div");
+    const spanEdit = document.createElement("span");
+    const adminConexionDown = `${LogoAdminMod}  ${adminTitle} `;
+
+    /* Élément du DOM pour la modale */
+    const containerModals = document.querySelector(".container-modals");
+    const closeModals = document.querySelector(".container-modals .fa-xmark")
+//#endregion
+
+//#region - /*===== WORKS (afficher des œuvres) =====*/
     /* Fonction asynchrone qui effectue une requête HTTP pour récupérer des données depuis l'API */
     async function getWorks() {
         try {
@@ -29,11 +50,13 @@
     /* Appel de la fonction pour récupérer les données depuis l'API */
     getWorks();
 
-/*=============== AFFICHAGE & CRÉATION DES WORKS DANS LE DOM ===============*/
     /* Fonction asynchrone permettant l'afficher les œuvres */
     async function displayWorks() {
         /* Récupération des œuvres depuis l'API de manière asynchrone */
         const works = await getWorks();
+
+        /* Vidage de la galerie d'images */
+        gallery.innerHTML = "";
 
         /* Pour chaque œuvre dans le tableau, appelle la fonction createWorks avec l'œuvre (work) comme argument */
         works.forEach((work) => {
@@ -69,8 +92,9 @@
         /* Ajoute l'élément figure comme enfant de l'élément avec la classe "gallery" */
         gallery.appendChild(figure);
     }
+//#endregion
 
-/*=============== BOUTONS DE CATÉGORIES ===============*/
+//#region - /*===== BOUTONS DE CATÉGORIES =====*/
     /* Récupération des catégories du tableau */
     async function getCategories() {
         try {
@@ -149,22 +173,35 @@
     }
     /* Appel de la fonction pour filtrer les catégories au chargement de la page */
     filterCategorie();
+//#endregion
 
-/*=============== MODE ADMIN ===============*/
-    /* Si l'utilisateur est connecter, getItem récupérer 
-    la valeur de window.sessionStorage */
-    const loged = window.sessionStorage.getItem("loged");
+//#region - /*===== MODE ADMIN =====*/
+    function authentificationReussie() {
+        /* Si l'authentification pour l'utilisateur est réussie avec l'API */
+        window.sessionStorage.setItem("loged", true);
+        /* Appel la fonction administrateur */
+        administrateur();
+    }
 
-    /* Élément du DOM pour le mode admin */
-    const admin = document.querySelector("header nav .admin");
-    const logout = document.querySelector("header nav .logout");
+    function administrateur() {
+        if (loged) {
+            logout.textContent = "logout";
+            document.body.insertAdjacentHTML("afterbegin", adminLog);
+            spanEdit.innerHTML = adminConexionDown;
+            divEdit.classList.add("div-edit");
+            divEdit.appendChild(portfolioTitle);
+            divEdit.appendChild(spanEdit);
+            portfolio.prepend(divEdit);
+            filters.style.display = "none";
+        }
+    }
+    /* Appel de la fonction d'authentification réussie pour déclencher les modifications au DOM */
+    authentificationReussie();
+//#endregion
 
-    /* Élément du DOM pour la modales*/
-    const containerModals = document.querySelector(".container-modals");
-    const closeModals = document.querySelector(".container-modals .fa-xmark")
-
+//#region - /*===== MODALE =====*/
     if (loged === "true") {
-        admin.textContent = "Admin";
+        //admin.textContent = "Admin";
         logout.textContent = "logout";
         logout.addEventListener("click", () => {
             /* Déconnexion : Mettez à jour la sessionStorage */
@@ -173,21 +210,20 @@
     }
 
     /* Au click sur "Admin" affichage de la modale pour gérer les projets */
-    admin.addEventListener("click", () => {
-        console.log("admin Mod");
+    divEdit.addEventListener("click", () => {
         containerModals.style.display = "flex";
     });
 
     /* Au click sur "la croix dans la modale" ferme l'affichage pour gérer les projets */
     closeModals.addEventListener("click", () => {
-        console.log("closeModals");
         containerModals.style.display = "none";
     });
 
     /* Permet de fermer la modale sans passer par le croix */
     containerModals.addEventListener("click", (e) => {
-        console.log(e.target.className);
+        //console.log(e.target.className);
         if (e.target.className === "container-modals") {
             containerModals.style.display = "none";
         }
     })
+//#endregion
