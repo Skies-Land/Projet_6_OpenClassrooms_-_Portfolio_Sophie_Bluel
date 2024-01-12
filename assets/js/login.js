@@ -64,7 +64,6 @@
             /* Redirection de l'utilisateur vers la page index.html après une authentification réussie */
             window.location.href = "../index.html";
         })
-        
 
         /* Gestion des erreurs lors de la requête ou du traitement des données */
         .catch((error) => {

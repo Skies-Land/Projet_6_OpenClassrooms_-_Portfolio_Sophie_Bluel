@@ -218,6 +218,7 @@ li:hover {
 	justify-content: center;
 	align-items: center;
 	position: fixed;
+	margin: 0 auto;
 	width: 100%;
 	height: 100%;
 	background-color: rgba(128, 128, 128, 0.347);
@@ -257,6 +258,46 @@ li:hover {
 	top: 1.25rem;
 	right: 1.25rem;
 	cursor: pointer;
+}
+
+/* Edition des projets dans la modale */
+.projet-modal {
+	width: 100%;
+    height: 70%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px
+}
+
+.projet-modal figure {
+	width: 20%;
+    height: 30%;
+    position: relative;
+}
+
+.projet-modal img {
+	width: 100%;
+    height: 100%;
+}
+
+.projet-modal span {
+	display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: black;
+    height: 15px;
+    width: 15px;
+    cursor: pointer;
+}
+
+.projet-modal .fa-trash-can {
+	color: white;
+    font-size: 0.7rem;
 }
 
 /*=============== LOGIN ===============*/

@@ -22,7 +22,8 @@
 
     /* Élément du DOM pour la modale */
     const containerModals = document.querySelector(".container-modals");
-    const closeModals = document.querySelector(".container-modals .fa-xmark")
+    const closeModals = document.querySelector(".container-modals .fa-xmark");
+    const projetModal = document.querySelector(".projet-modal");
 //#endregion
 
 //#region - /*===== WORKS (afficher des œuvres) =====*/
@@ -200,30 +201,52 @@
 //#endregion
 
 //#region - /*===== MODALE =====*/
-    if (loged === "true") {
-        //admin.textContent = "Admin";
-        logout.textContent = "logout";
-        logout.addEventListener("click", () => {
-            /* Déconnexion : Mettez à jour la sessionStorage */
-            window.sessionStorage.removeItem("loged");
+    function modal() {
+        if (loged === "true") {
+            logout.addEventListener("click", () => {
+                /* Déconnexion : Mettez à jour la sessionStorage */
+                window.sessionStorage.removeItem("loged");
+            });
+        }
+    
+        /* Au click sur "Mode édition" affichage de la modale pour gérer les projets */
+        divEdit.addEventListener("click", () => {
+            containerModals.style.display = "flex";
+        });
+    
+        /* Au click sur "la croix dans la modale" ferme l'affichage pour gérer les projets */
+        closeModals.addEventListener("click", () => {
+            containerModals.style.display = "none";
+        });
+    
+        /* Permet de fermer la modale sans passer par le croix */
+        containerModals.addEventListener("click", (e) => {
+            if (e.target.className === "container-modals") {
+                containerModals.style.display = "none";
+            }
         });
     }
+    modal()
+    
+    /* Affichage de la galerie d'images dans la modale */
+    async function displayWorkModal() {
+        projetModal.innerHTML = "";
+        const imageWork = await getWorks();
+        imageWork.forEach(projet => {
+            const figure = document.createElement("figure");
+            const img = document.createElement("img");
+            const span = document.createElement("span");
+            const trash = document.createElement("i");
+            trash.classList.add("fa-solid", "fa-trash-can");
+            trash.id = projet.id;
+            img.src = projet.imageUrl;
+            span.appendChild(trash);
+            figure.appendChild(span);
+            figure.appendChild(img);
+            projetModal.appendChild(figure);
+        });
+        console.log(imageWork);
+    }
+    displayWorkModal()
 
-    /* Au click sur "Admin" affichage de la modale pour gérer les projets */
-    divEdit.addEventListener("click", () => {
-        containerModals.style.display = "flex";
-    });
-
-    /* Au click sur "la croix dans la modale" ferme l'affichage pour gérer les projets */
-    closeModals.addEventListener("click", () => {
-        containerModals.style.display = "none";
-    });
-
-    /* Permet de fermer la modale sans passer par le croix */
-    containerModals.addEventListener("click", (e) => {
-        //console.log(e.target.className);
-        if (e.target.className === "container-modals") {
-            containerModals.style.display = "none";
-        }
-    })
 //#endregion
