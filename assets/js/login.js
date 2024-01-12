@@ -1,3 +1,9 @@
+//#region - /* ===== VÉRIFICATION DE FETCH ===== */
+if (!window.fetch) {
+    alert("Your browser does not support fetch API");
+}
+//#endregion
+
 //#region - /*===== VARIABLES =====*/
     const emailInput = document.querySelector("form #email");
     const passwordInput = document.querySelector("form #password");
@@ -70,4 +76,5 @@
             console.error("Une erreur s'est produite lors de la récupération des données", error);
         });
     });
+
 //#endregion

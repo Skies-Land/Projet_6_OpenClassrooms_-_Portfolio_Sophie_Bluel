@@ -1,3 +1,9 @@
+//#region - /* ===== VÉRIFICATION DE FETCH ===== */
+if (!window.fetch) {
+    alert("Your browser does not support fetch API");
+}
+//#endregion
+
 //#region - /*===== VARIABLES =====*/
     /* Élément du DOM pour la galerie et les boutons de catégories */
     const gallery = document.querySelector(".gallery");
@@ -201,6 +207,7 @@
 //#endregion
 
 //#region - /*===== MODALE =====*/
+    /* Création de la modale pour gérer les projets */
     function modal() {
         if (loged === "true") {
             logout.addEventListener("click", () => {
@@ -216,13 +223,13 @@
     
         /* Au click sur "la croix dans la modale" ferme l'affichage pour gérer les projets */
         closeModals.addEventListener("click", () => {
-            containerModals.style.display = "none";
+            containerModals.remove();
         });
     
         /* Permet de fermer la modale sans passer par le croix */
         containerModals.addEventListener("click", (e) => {
             if (e.target.className === "container-modals") {
-                containerModals.style.display = "none";
+                containerModals.remove();
             }
         });
     }
@@ -232,6 +239,7 @@
     async function displayWorkModal() {
         projetModal.innerHTML = "";
         const imageWork = await getWorks();
+
         imageWork.forEach(projet => {
             const figure = document.createElement("figure");
             const img = document.createElement("img");
@@ -239,6 +247,25 @@
             const trash = document.createElement("i");
             trash.classList.add("fa-solid", "fa-trash-can");
             trash.id = projet.id;
+            trash.addEventListener("click", (e) =>  {
+                e.stopImmediatePropagation();
+                console.log(figure);
+                const token = window.sessionStorage.getItem("token");
+                fetch(`http://localhost:5678/api/works/${projet.id}`, {
+                    method: "DELETE",
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+                .then (res => {
+                    console.log(res)
+                    figure.remove()
+                })
+                .catch (error => {
+                    console.error(error)
+                })
+            
+            })
             img.src = projet.imageUrl;
             span.appendChild(trash);
             figure.appendChild(span);
