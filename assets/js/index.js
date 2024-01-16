@@ -26,10 +26,6 @@ if (!window.fetch) {
     const spanEdit = document.createElement("span");
     const adminConexionDown = `${LogoAdminMod}  ${adminTitle} `;
 
-    /* Élément du DOM pour la modale */
-    const containerModals = document.querySelector(".container-modals");
-    const closeModals = document.querySelector(".container-modals .fa-xmark");
-    const projetModal = document.querySelector(".projet-modal");
 //#endregion
 
 //#region - /*===== WORKS (afficher des œuvres) =====*/
@@ -206,8 +202,13 @@ if (!window.fetch) {
     authentificationReussie();
 //#endregion
 
-//#region - /*===== MODALE =====*/
-    /* Création de la modale pour gérer les projets */
+//#region - /*===== MODALES =====*/
+    /* Élément du DOM pour la modale 1 */
+    const containerModals = document.querySelector(".container-modals");
+    const closeModals = document.querySelector(".container-modals .fa-xmark");
+    const projetModal = document.querySelector(".projet-modal");
+
+    /* Création de la modale 1 pour gérer les projets */
     function modal() {
         if (loged === "true") {
             logout.addEventListener("click", () => {
@@ -215,31 +216,33 @@ if (!window.fetch) {
                 window.sessionStorage.removeItem("loged");
             });
         }
-    
         /* Au click sur "Mode édition" affichage de la modale pour gérer les projets */
         divEdit.addEventListener("click", () => {
             containerModals.style.display = "flex";
         });
-    
         /* Au click sur "la croix dans la modale" ferme l'affichage pour gérer les projets */
         closeModals.addEventListener("click", () => {
             containerModals.remove();
         });
-    
         /* Permet de fermer la modale sans passer par le croix */
         containerModals.addEventListener("click", (e) => {
             if (e.target.className === "container-modals") {
                 containerModals.remove();
             }
         });
+        /* Permet de fermer la modale en appuyant sur la touche "Echap" */
+        window.addEventListener("keydown", (e) => {
+            if (e.key === "Escape") {
+                containerModals.remove();
+            }
+        });
     }
     modal()
-    
-    /* Affichage de la galerie d'images dans la modale */
+
+    /* Affichage et gestion de la galerie d'images dans la modale 1 */
     async function displayWorkModal() {
         projetModal.innerHTML = "";
         const imageWork = await getWorks();
-
         imageWork.forEach(projet => {
             const figure = document.createElement("figure");
             const img = document.createElement("img");
@@ -264,7 +267,6 @@ if (!window.fetch) {
                 .catch (error => {
                     console.error(error)
                 })
-            
             })
             img.src = projet.imageUrl;
             span.appendChild(trash);
@@ -275,5 +277,31 @@ if (!window.fetch) {
         console.log(imageWork);
     }
     displayWorkModal()
+
+    /*====================================================*/
+
+    /* Élément du DOM pour la modale 2 */
+    const btnAddWorkModal = document.querySelector(".modal-projet button");
+    const modalAddWork = document.querySelector(".modal-addworks");
+    const modalProjet = document.querySelector(".modal-projet");
+    const arrowleft = document.querySelector(".modal-addworks .fa-arrow-left");
+    const markAdd = document.querySelector(".modal-addworks .fa-xmark");
+
+    /* Fonction permettant l'affichage de la modale 2 */
+    function displayAddWorkModal() {
+        btnAddWorkModal.addEventListener("click", () => {
+            modalAddWork.style.display = "flex";
+            modalProjet.style.display = "none";
+        });
+        arrowleft.addEventListener("click", () => {
+            modalAddWork.style.display = "none";
+            modalProjet.style.display = "flex";
+        });
+        markAdd.addEventListener("click", () => {
+            containerModals.style.display = "none";
+            window.location = "index.html";
+        });
+    }
+    displayAddWorkModal();
 
 //#endregion
