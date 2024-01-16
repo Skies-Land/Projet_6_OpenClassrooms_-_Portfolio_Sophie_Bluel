@@ -250,10 +250,15 @@ if (!window.fetch) {
             const trash = document.createElement("i");
             trash.classList.add("fa-solid", "fa-trash-can");
             trash.id = projet.id;
+
+            /* Ajoute un gestionnaire d'événements au clic sur l'icône de corbeille */
             trash.addEventListener("click", (e) =>  {
+                /* Empêche la propagation de l'événement pour éviter d'activer d'autres événements */
                 e.stopImmediatePropagation();
-                console.log(figure);
+
+                /* Récupèration du token d'authentification depuis la sessionStorage */
                 const token = window.sessionStorage.getItem("token");
+                /* Envoie une requête DELETE au serveur pour supprimer le projet */
                 fetch(`http://localhost:5678/api/works/${projet.id}`, {
                     method: "DELETE",
                     headers: {
@@ -274,9 +279,8 @@ if (!window.fetch) {
             figure.appendChild(img);
             projetModal.appendChild(figure);
         });
-        console.log(imageWork);
     }
-    displayWorkModal()
+    displayWorkModal();
 
     /*====================================================*/
 
@@ -289,19 +293,111 @@ if (!window.fetch) {
 
     /* Fonction permettant l'affichage de la modale 2 */
     function displayAddWorkModal() {
+        /* Au clique du boutton de la modale 1 affiche la modale 2 pour ajouter une image */
         btnAddWorkModal.addEventListener("click", () => {
             modalAddWork.style.display = "flex";
             modalProjet.style.display = "none";
         });
+        /* Au clique de la flèche retour à la modale 1 */
         arrowleft.addEventListener("click", () => {
             modalAddWork.style.display = "none";
             modalProjet.style.display = "flex";
         });
+        /* Au clique du boutton "Valider" de la modale 2 fermeture de la fenêtre et retour à l'index */
         markAdd.addEventListener("click", () => {
             containerModals.style.display = "none";
             window.location = "index.html";
         });
     }
     displayAddWorkModal();
+
+    /* Élément du DOM pour la modale 2 pour la prévisualisation de l'image uploader */
+    const previewImg = document.querySelector(".container-file img");
+    const inputFile = document.querySelector(".container-file input");
+    const labelFile = document.querySelector(".container-file label");
+    const iconFile = document.querySelector(".container-file .fa-image");
+    const pFile = document.querySelector(".container-file p");
+
+    /*  Ajoute un gestionnaire d'événements au changement de la sélection de fichier */
+    inputFile.addEventListener("change", () => {
+        const file = inputFile.files[0];
+        console.log(file);
+
+        /* Vérifie si un fichier a été sélectionné et s'il s'agit d'une image */
+        if (file && file.type.startsWith("image/")) {
+            /* Crée un objet FileReader pour lire le contenu du fichier */
+            const reader = new FileReader();
+
+            /* Configure une fonction à exécuter une fois le fichier lu avec succès */
+            reader.onload = function (e) {
+                try {
+                    /* Affecte l'URL de l'image au src de l'élément d'aperçu */
+                    previewImg.src = e.target.result;
+
+                    /* Affiche l'élément d'aperçu et masque les autres éléments de l'interface */
+                    previewImg.style.display = "flex";
+                    labelFile.style.display = "none";
+                    iconFile.style.display = "none";
+                    pFile.style.display = "none";
+                } catch (error) {
+                    /* Message dans la console informant une erreur de lecture du fichier */
+                    console.error("Une erreur est survenue lors de la lecture du fichier :", error);
+                }
+            };
+
+            /* Commence la lecture du contenu du fichier sous forme d'URL data */
+            reader.readAsDataURL(file);
+        } else {
+            /* Message dans la console informant le cas où le fichier n'est pas une image */
+            console.log("Veuillez sélectionner une image valide.");
+        }
+    });
+
+    /* Ajoute un gestionnaire d'événements au chargement du DOM 
+    avec une fonction anonyme exécutée une fois que le document HTML a été complètement chargé */
+    document.addEventListener("DOMContentLoaded", function() {
+        /* Élément du DOM du formulaire d'uploade pour la modale 2 */
+        const form = document.querySelector("form");
+        const title = document.querySelector("#title");
+        const category = document.querySelector("#category-input");
+
+        /* Ajoute un gestionnaire d'événements pour l'événement de soumission du formulaire */
+        form.addEventListener("submit", async (e) => {
+            /* Empêche le comportement par défaut du formulaire -rechargement de la page- */
+            e.preventDefault();
+
+            /* Crée un objet formData contenant les données du formulaire */
+            const formData = {
+                title: title.value,
+                categoryId: category.value,
+                category: {
+                    id: category.value,
+                    name: category.options[category.selectedIndex].text,
+                },
+            };
+
+            try {
+                /* Envoie une requête POST au serveur avec les données du formulaire */
+                const response = await fetch("http://localhost:5678/api/works/", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(formData),
+                })
+                .then((response) => {
+                    return response.json();
+                })
+                .then((data) => {
+                    /* Affiche un message dans la console une fois que l'image est chargée avec succès */
+                    console.log("Nouvelle image bien chargée !" + data);
+                });
+
+            } catch (error) {
+                /* Affiche un message dans la console en cas d'erreur lors de l'envoi de l'image */
+                console.log("Une erreur est survenue lors de l'envoi de l'image");
+            }
+        });
+    });
 
 //#endregion

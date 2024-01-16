@@ -55,7 +55,7 @@
 						<i class="fa-regular fa-image"></i>
 						<label for="file" class="label-file">+ Ajouter une photo</label>
 						<p>jpg, png : 4mo max</p>
-						<input type="file" name="image" id="file" accept="image/jpg, image/png" required>
+						<input type="file" name="image" id="file" accept="image/jpeg, image/png" required>
 						<img id="previewImage" src="#" alt="Aperçu de l'image">
 					</div>
 					<label for="title">Titre</label>
@@ -63,13 +63,14 @@
 					<label for="category-input">Catégorie</label>
 
 					<select id="category-input" name="category" required>
+						<option value="" disabled selected hidden>Sélectionnez une catégorie</option>
 						<option value="1">Objets</option>
 						<option value="2">Appartements</option>
 						<option value="3">Hôtels & retaurants</option>
 					</select>
 
 					<div class="container-button-addworks">
-						<button type="submit" class="button-modal-2">Valider</buttontype=class=>
+						<button type="submit" class="button-modal-2">Valider</button>
 					</div>
 				</form>
 			</section>
