@@ -1,7 +1,7 @@
 //#region - /* ===== VÉRIFICATION DE FETCH ===== */
-if (!window.fetch) {
-    alert("Your browser does not support fetch API");
-}
+    if (!window.fetch) {
+        alert("Your browser does not support fetch API");
+    }
 //#endregion
 
 //#region - /*===== VARIABLES =====*/
