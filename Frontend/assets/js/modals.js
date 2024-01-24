@@ -120,88 +120,97 @@
     const iconFile = document.querySelector(".container-file .fa-image");
     const pFile = document.querySelector(".container-file p");
 
-    /*  Ajoute un gestionnaire d'événements au changement de la sélection de fichier */
-    inputFile.addEventListener("change", () => {
+    /* Fonction pour gérer la prévisualisation de l'image */
+    function imagePreview() {
+        /* Récupération du fichier sélectionné dans l'input de type fichier */
         const file = inputFile.files[0];
-        console.log(file); /* Information du fichier dans la console */
+        console.log(file);
 
-        /* Vérifie si un fichier a été sélectionné et s'il s'agit d'une image */
+        /* Vérification si le fichier existe et s'il s'agit d'une image */
         if (file && file.type.startsWith("image/")) {
-            /* Crée un objet FileReader pour lire le contenu du fichier */
+            /* Création d'un objet FileReader pour lire le contenu du fichier */
             const reader = new FileReader();
 
-            /* Configure une fonction à exécuter une fois le fichier lu avec succès */
+            /* Fonction exécutée lorsque la lecture du fichier est terminée */
             reader.onload = function (e) {
                 try {
-                    /* Affecte l'URL de l'image au src de l'élément d'aperçu */
+                    /* Attribution de l'URL de la prévisualisation à la source de l'image */
                     previewImg.src = e.target.result;
 
-                    /* Affiche l'élément d'aperçu et masque les autres éléments de l'interface */
+                    /* Modification du style pour afficher l'image et masquer d'autres éléments */
                     previewImg.style.display = "flex";
                     labelFile.style.display = "none";
                     iconFile.style.display = "none";
                     pFile.style.display = "none";
                 } catch (error) {
-                    /* Message dans la console informant une erreur de lecture du fichier */
+                    /* Gestion des erreurs lors de la modification de l'interface utilisateur */
                     console.error("Une erreur est survenue lors de la lecture du fichier :", error);
                 }
             };
 
-            /* Commence la lecture du contenu du fichier sous forme d'URL data */
+            /* Lecture du contenu du fichier sous forme d'URL data:URL */
             reader.readAsDataURL(file);
         } else {
-            /* Message dans la console informant le cas où le fichier n'est pas une image */
+            /* Affichage d'un message si le fichier n'est pas une image valide */
             console.log("Veuillez sélectionner une image valide.");
         }
-    });
+    }
 
-    /* Ajoute un gestionnaire d'événements au chargement du DOM 
-    avec une fonction anonyme exécutée une fois que le document HTML a été complètement chargé */
-    document.addEventListener("DOMContentLoaded", function() {
-        /* Élément du DOM du formulaire d'uploade pour la modale 2 */
+    /* Attente que le DOM soit complètement chargé avant d'attacher les écouteurs d'événements */
+    document.addEventListener("DOMContentLoaded", function () {
+        /* Sélection du formulaire dans le DOM */
         const form = document.querySelector("form");
-        
 
-        /* Ajoute un gestionnaire d'événements pour l'événement de soumission du formulaire */
+        /* Ajout d'un écouteur d'événements sur le changement de l'input de type fichier */
+        inputFile.addEventListener("change", imagePreview);
+
+        /* Ajout d'un écouteur d'événements sur la soumission du formulaire */
         form.addEventListener("submit", async (e) => {
-            /* Empêche le comportement par défaut du formulaire -rechargement de la page- */
+            /* Empêche le comportement par défaut de soumission du formulaire */
             e.preventDefault();
 
+            /* Récupération des éléments du formulaire */
             const title = document.querySelector("#title");
             const category = document.querySelector("#category-input");
             const playload = new FormData();
 
+            /* Affichage des valeurs du titre, de la catégorie et du fichier dans la console */
             console.log(title.value);
             console.log(category.value);
             console.log(inputFile.files[0]);
 
+            /* Ajout des données au FormData pour l'envoi via la requête HTTP */
             playload.append("title", title.value);
             playload.append("category", category.value);
             playload.append("image", inputFile.files[0]);
 
             try {
-                /* Récupèration du token d'authentification depuis la sessionStorage */
+                /* Récupération du token de la session */
                 const token = window.sessionStorage.getItem("token");
-                /* Envoie une requête POST au serveur avec les données du formulaire */
+                /* Envoi de la requête POST au serveur avec les données du formulaire */
                 const response = await fetch("http://localhost:5678/api/works/", {
                     method: "POST",
                     headers: {
-                        "Content-Type": "application/json",
                         Authorization: `Bearer ${token}`
                     },
                     body: playload,
-                })
-                .then((response) => {
-                    return response.json();
-                })
-                .then((data) => {
-                    /* Affiche un message dans la console une fois que l'image est chargée avec succès */
-                    console.log("Nouvelle image bien chargée !" + data);
                 });
+
+                /* Vérification si la réponse du serveur est OK */
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+
+                /* Récupération des données JSON de la réponse */
+                const data = await response.json();
+                /* Affichage d'un message de succès dans la console */
+                console.log("Nouvelle image bien chargée !" + data);
+
             } catch (error) {
-                /* Affiche un message dans la console en cas d'erreur lors de l'envoi de l'image */
-                console.log("Une erreur est survenue lors de l'envoi de l'image");
+                /* Gestion des erreurs lors de l'envoi de la requête */
+                console.log("Une erreur est survenue lors de l'envoi de l'image :", error.message);
             }
         });
     });
+
 //#endregion
