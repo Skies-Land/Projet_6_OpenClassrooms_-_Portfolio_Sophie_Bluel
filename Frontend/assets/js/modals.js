@@ -18,24 +18,24 @@
                 window.sessionStorage.removeItem("loged");
             });
         }
-        /* Au click sur "Mode édition" affichage de la modale pour gérer les projets */
+        /* Au click sur "Modifier" affichage de la modale pour gérer les projets */
         divEdit.addEventListener("click", () => {
             containerModals.style.display = "flex";
         });
         /* Au click sur "la croix dans la modale" ferme l'affichage pour gérer les projets */
         closeModals.addEventListener("click", () => {
-            containerModals.remove();
+            containerModals.style.display = "none";
         });
         /* Permet de fermer la modale sans passer par le croix */
         containerModals.addEventListener("click", (e) => {
             if (e.target.className === "container-modals") {
-                containerModals.remove();
+                containerModals.style.display = "none";
             }
         });
         /* Permet de fermer la modale en appuyant sur la touche "Echap" */
         window.addEventListener("keydown", (e) => {
             if (e.key === "Escape") {
-                containerModals.remove();
+                containerModals.style.display = "none";
             }
         });
     }
@@ -54,10 +54,7 @@
             trash.id = projet.id;
 
             /* Ajoute un gestionnaire d'événements au clic sur l'icône de corbeille */
-            trash.addEventListener("click", (e) =>  {
-                /* Empêche la propagation de l'événement pour éviter d'activer d'autres événements */
-                e.stopImmediatePropagation();
-
+            trash.addEventListener("click", () =>  {
                 /* Récupèration du token d'authentification depuis la sessionStorage */
                 const token = window.sessionStorage.getItem("token");
                 /* Envoie une requête DELETE au serveur pour supprimer le projet */
@@ -75,6 +72,7 @@
                     console.error(error)
                 })
             })
+
             img.src = projet.imageUrl;
             span.appendChild(trash);
             figure.appendChild(span);
