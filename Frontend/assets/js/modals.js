@@ -86,6 +86,7 @@
 
     /* Élément du DOM pour la modale 2 */
     const btnAddWorkModal = document.querySelector(".modal-projet button");
+    const btnValidModal = document.querySelector(".container-button-addworks .button-modal-2");
     const modalAddWork = document.querySelector(".modal-addworks");
     const modalProjet = document.querySelector(".modal-projet");
     const arrowleft = document.querySelector(".modal-addworks .fa-arrow-left");
@@ -103,11 +104,14 @@
             modalAddWork.style.display = "none"; /* Masque l'affichage de la modale 2 */
             modalProjet.style.display = "flex"; /* Affichage de la modale 1 */
         });
-        /* Au clique du boutton "Valider" de la modale 2 fermeture de la fenêtre et retour à l'index */
+        /* Au clique sur la croix de la modale 2 fermeture de la fenêtre et retour à l'index */
         markAdd.addEventListener("click", () => {
-            containerModals.style.display = "none"; /* Fermeture de la modale */
-            window.location = "index.html";
+            containerModals.style.display = "none";
         });
+        /* Au clique du boutton "Valider" de la modale 2 fermeture de la fenêtre et retour à l'index */
+        btnValidModal.addEventListener("click", () => {
+            containerModals.style.display = "none";
+        })
     }
     displayAddWorkModal();
 
@@ -117,7 +121,7 @@
     const labelFile = document.querySelector(".container-file label");
     const iconFile = document.querySelector(".container-file .fa-image");
     const pFile = document.querySelector(".container-file p");
-
+    
     /* Fonction pour gérer la prévisualisation de l'image */
     function imagePreview() {
         /* Récupération du fichier sélectionné dans l'input de type fichier */
@@ -211,4 +215,20 @@
         });
     });
 
+    const form = document.querySelector("form");
+    
+    /* Fonction permettant de changer le style CSS du bouton "Valider" quand les champs "image & titre" sont remplie */
+    function formCompleted() {
+        const buttonValidForm = document.querySelector(".container-button-addworks button");
+        form.addEventListener("input", () => {
+            if (!title.value == "" && !inputFile.files[0] == "") {
+                buttonValidForm.classList.remove("button-modal-2");
+                buttonValidForm.classList.add("button-modal-2-active");
+            } else {
+                buttonValidForm.classList.remove("button-modal-2-active");
+                buttonValidForm.classList.add("button-modal-2");
+            }
+        });
+    }
+    formCompleted()
 //#endregion

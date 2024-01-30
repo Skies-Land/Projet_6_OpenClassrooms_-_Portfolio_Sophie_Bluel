@@ -227,7 +227,7 @@ li:hover {
 
 .modal-projet {
 	background-color: white;
-	width: 50%;
+	width: 40%;
 	height: 50%;
 	border-radius: 0.75rem;
 	display: flex;
@@ -241,7 +241,7 @@ li:hover {
 	position: absolute;
 	top: 1.25rem;
 	right: 1.25rem;
-	font-size: 1rem;
+	font-size: 1.3rem;
 	cursor: pointer;
 }
 
@@ -250,7 +250,7 @@ li:hover {
 	display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 80%;
+    height: 70%;
     width: 70%;
 }
 
@@ -262,10 +262,12 @@ li:hover {
     grid-template-rows: 40% 40% 40%;
     grid-column-gap: 10px;
     grid-row-gap: 30px;
+	margin-top: -2rem;
 }
 
 .modal-projet h2 {
 	margin-top: 10px;
+	margin-bottom: 2rem;
     font-weight: bold;
     font-size: 1.5rem;
 }
@@ -317,6 +319,7 @@ li:hover {
     font-size: 1rem;
     font-family: Syne;
     cursor: pointer;
+	border: none;
 }
 
 .container-button-modal button:hover {
@@ -328,7 +331,7 @@ li:hover {
 /* Modale 2 - Add works */
 .modal-addworks {
 	background-color: white;
-	width: 50%;
+	width: 40%;
 	height: 50%;
 	border-radius: 0.75rem;
 	display: none;
@@ -342,7 +345,7 @@ li:hover {
 	position: absolute;
     top: 1.25rem;
     left: 1.25rem;
-	font-size: 1rem;
+	font-size: 1.3rem;
     cursor: pointer;
 }
 
@@ -350,7 +353,7 @@ li:hover {
 	position: absolute;
 	top: 1.25rem;
 	right: 1.25rem;
-	font-size: 1rem;
+	font-size: 1.3rem;
 	cursor: pointer;
 }
 
@@ -365,7 +368,7 @@ li:hover {
     justify-content: center;
     flex-direction: column;
     height: 80%;
-    width: 80%;
+    width: 75%;
     gap: 20px;
 }
 
@@ -375,7 +378,7 @@ li:hover {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 30%;
+    height: 40%;
     background-color: #e8f1f6;
     gap: 10px;
 }
@@ -389,6 +392,7 @@ li:hover {
 }
 
 .modal-addworks form .container-file .fa-image {
+	margin-top: 1rem;
 	font-size: 4rem;
     color: #b9c5cc;
 }
@@ -410,13 +414,17 @@ li:hover {
 }
 
 .modal-addworks form #title {
-	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
-    height: 8%;
+	height: 3.12rem;
+	font-size: 0.8rem;
+	border: none;
+	box-shadow: 0 0.25rem 0.87rem rgba(0, 0, 0, 0.09);
 }
 
 .modal-addworks form #category-input {
-	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
-    height: 8%;
+	height: 3.12rem;
+	font-size: 0.8rem;
+	border: none;
+	box-shadow: 0 0.25rem 0.87rem rgba(0, 0, 0, 0.09);
 }
 
 .container-button-addworks {
@@ -437,6 +445,7 @@ li:hover {
     font-size: 1rem;
     font-family: Syne;
     cursor: pointer;
+	border: none;
 }
 
 .container-button-addworks .button-modal-2:hover {
@@ -445,6 +454,17 @@ li:hover {
     color: #1d6154;
 }
 
+.button-modal-2-active {
+	background-color: #1d6154;
+	padding: 9px 50px;
+    border-radius: 25px;
+    color: white;
+    font-weight: 700;
+    font-size: 1rem;
+    font-family: Syne;
+    cursor: pointer;
+	border: none;
+}
 
 /*=============== LOGIN ===============*/
 .login {
