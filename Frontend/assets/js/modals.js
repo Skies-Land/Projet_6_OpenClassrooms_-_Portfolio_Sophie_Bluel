@@ -108,10 +108,6 @@
         markAdd.addEventListener("click", () => {
             containerModals.style.display = "none";
         });
-        /* Au clique du boutton "Valider" de la modale 2 fermeture de la fenêtre et retour à l'index */
-        btnValidModal.addEventListener("click", () => {
-            containerModals.style.display = "none";
-        })
     }
     displayAddWorkModal();
 
@@ -158,22 +154,42 @@
         }
     }
 
+    /* Fonction permettant de changer le style CSS du bouton "Valider" et le rendant 
+    fonctionnelle quand les champs "image, titre & catégorie" sont remplie */
+    function formCompleted() {
+        const title = document.querySelector("#title");
+        const category = document.querySelector("#category-input");
+        const buttonValidForm = document.querySelector(".container-button-addworks button");
+        
+        if (title.value !== "" && inputFile.files[0] !== undefined && category.value !== "") {
+            buttonValidForm.classList.remove("button-modal-2");
+            buttonValidForm.classList.add("button-modal-2-active");
+            buttonValidForm.disabled = false; /* Activer le bouton "Valider" si les inputs sont remplie */
+
+        } else {
+            buttonValidForm.classList.remove("button-modal-2-active");
+            buttonValidForm.classList.add("button-modal-2");
+            buttonValidForm.disabled = true; /* Désactive le bouton "Valider" si les input ne sont pas remplie */
+        }
+    }
+
     /* Attente que le DOM soit complètement chargé avant d'attacher les écouteurs d'événements */
     document.addEventListener("DOMContentLoaded", function () {
         /* Sélection du formulaire dans le DOM */
         const form = document.querySelector("form");
+        const title = document.querySelector("#title");
+        const category = document.querySelector("#category-input");
 
-        /* Ajout d'un écouteur d'événements sur le changement de l'input de type fichier */
+        /* Ajout d'un écouteur d'événements sur le changement des l'inputs de type fichier image, titre & catégorie */
         inputFile.addEventListener("change", imagePreview);
+        title.addEventListener("change", formCompleted);
+        category.addEventListener("change", formCompleted);
 
         /* Ajout d'un écouteur d'événements sur la soumission du formulaire */
         form.addEventListener("submit", async (e) => {
             /* Empêche le comportement par défaut de soumission du formulaire */
             e.preventDefault();
-
-            /* Récupération des éléments du formulaire */
-            const title = document.querySelector("#title");
-            const category = document.querySelector("#category-input");
+            
             const playload = new FormData();
 
             /* Affichage des valeurs du titre, de la catégorie et du fichier dans la console */
@@ -207,6 +223,7 @@
                 const data = await response.json();
                 /* Affichage d'un message de succès dans la console */
                 console.log("Nouvelle image bien chargée !" + data);
+                displayWorks();
 
             } catch (error) {
                 /* Gestion des erreurs lors de l'envoi de la requête */
@@ -214,21 +231,4 @@
             }
         });
     });
-
-    const form = document.querySelector("form");
-    
-    /* Fonction permettant de changer le style CSS du bouton "Valider" quand les champs "image & titre" sont remplie */
-    function formCompleted() {
-        const buttonValidForm = document.querySelector(".container-button-addworks button");
-        form.addEventListener("input", () => {
-            if (!title.value == "" && !inputFile.files[0] == "") {
-                buttonValidForm.classList.remove("button-modal-2");
-                buttonValidForm.classList.add("button-modal-2-active");
-            } else {
-                buttonValidForm.classList.remove("button-modal-2-active");
-                buttonValidForm.classList.add("button-modal-2");
-            }
-        });
-    }
-    formCompleted()
 //#endregion

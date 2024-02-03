@@ -32,8 +32,6 @@
             return [];
         }
     }
-    /* Appel de la fonction pour récupérer les données depuis l'API */
-    getWorks();
 
     /* Fonction asynchrone permettant l'afficher les œuvres */
     async function displayWorks() {
@@ -165,7 +163,6 @@
     const loged = window.sessionStorage.getItem("loged");
 
     /* Élément du DOM pour le mode admin */
-    const admin = document.querySelector("header nav .admin");
     const logout = document.querySelector("header nav .logout");
 
     /* Élément du DOM pour la navbar en mode admin */
