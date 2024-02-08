@@ -165,6 +165,10 @@
             buttonValidForm.classList.remove("button-modal-2");
             buttonValidForm.classList.add("button-modal-2-active");
             buttonValidForm.disabled = false; /* Activer le bouton "Valider" si les inputs sont remplie */
+            
+            buttonValidForm.addEventListener("click", () => {
+                containerModals.style.display = "none";
+            });           
 
         } else {
             buttonValidForm.classList.remove("button-modal-2-active");
@@ -223,7 +227,6 @@
                 const data = await response.json();
                 /* Affichage d'un message de succès dans la console */
                 console.log("Nouvelle image bien chargée !" + data);
-                displayWorks();
 
             } catch (error) {
                 /* Gestion des erreurs lors de l'envoi de la requête */

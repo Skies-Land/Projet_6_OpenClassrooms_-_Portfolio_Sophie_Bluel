@@ -33,7 +33,7 @@
         }
     }
 
-    /* Fonction asynchrone permettant l'afficher les œuvres */
+    /* Fonction asynchrone permettant d'afficher les œuvres */
     async function displayWorks() {
         /* Récupération des œuvres depuis l'API de manière asynchrone */
         const works = await getWorks();
@@ -143,13 +143,16 @@
                 /* Vidage de la galerie d'images */
                 gallery.innerHTML = "";
 
-                /* Parcours de toutes les œuvres */
-                images.forEach((work) => {
+                /* Filtrage des images en fonction de l'ID du bouton */
+                const filteredImages = images.filter((work) => {
                     /* Si l'ID du bouton correspond à l'ID de la catégorie de l'œuvre
                     ou si l'ID du bouton est "0", afficher l'œuvre dans la galerie */
-                    if (btnId == work.categoryId || btnId == "0") {
-                        createWorks(work);
-                    }
+                    return btnId == work.categoryId || btnId == "0";
+                });
+
+                /* Création des œuvres filtrées dans la galerie */
+                filteredImages.forEach((work) => {
+                    createWorks(work);
                 });
             });
         });
