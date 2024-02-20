@@ -66,7 +66,10 @@
                 })
                 .then (res => {
                     console.log(res)
-                    figure.remove()
+                    /* Suppression d'image dans la galerie */
+                    figure.remove();
+                    /* Actualisation de la galerie d'image */
+                    displayWorks();
                 })
                 .catch (error => {
                     console.error(error)
@@ -227,6 +230,9 @@
                 const data = await response.json();
                 /* Affichage d'un message de succès dans la console */
                 console.log("Nouvelle image bien chargée !" + data);
+                /* Actualisation de la galerie d'image et de la modale permettant la suppression d'une image */
+                displayWorks();
+                displayWorkModal();
 
             } catch (error) {
                 /* Gestion des erreurs lors de l'envoi de la requête */
